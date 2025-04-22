@@ -7,7 +7,6 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Separator} from '@/components/ui/separator';
-import {Textarea} from '@/components/ui/textarea';
 import {generateRecipes, GenerateRecipesOutput} from '@/ai/flows/generate-recipes';
 import {useForm} from 'react-hook-form';
 import {useLocalStorage} from 'usehooks-ts';
@@ -18,6 +17,7 @@ import {useToast} from '@/hooks/use-toast';
 import {useEffect, useState} from 'react';
 import {Icons} from '@/components/icons';
 import {cn} from '@/lib/utils';
+import React from 'react';
 import { LanguageTexts } from '../../types';
 
 
@@ -174,11 +174,10 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                    <Textarea
-                      readOnly
-                      className="mt-2 h-40 text-sm"
-                      value={recipe.instructions}
-                    />
+                  <div className="mt-2 h-40 text-sm overflow-auto" dangerouslySetInnerHTML={{
+                    __html: recipe.instructions
+                  }} />
+
                   </CardContent>
                   <CardFooter>
                     <p className="text-xs text-muted-foreground">{texts.enjoyYourMeal}</p>

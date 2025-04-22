@@ -72,13 +72,29 @@ const generateRecipesPrompt = ai.definePrompt({
           ingredientsRequired: z.array(
             z.string().describe('A list of ingredients required for the recipe.')
           ),
-          instructions: z.string().describe('Step-by-step instructions for the recipe.'),
-          availableIngredientsUsed: z
+          instructions: z
+          .string()
+          .transform((val) => {
+            return val
+              .split(/(\d+\.) /)
+              .map((item, index) =>
+                index % 2 === 1 ? `<b>${item}</b>` : item
+              )
+              .join("") + "<br/>";
+          })
+            .transform((val) => val.replace(/\n/g, "<br/>"))
+            .describe('Step-by-step instructions for the recipe.'),
+            availableIngredientsUsed: z
             .array(z.string())
             .describe('Ingredients from the input that are used in this recipe.'),
         })
-      ).describe('A list of recipe suggestions based on the input ingredients.'),
+      )
+        .describe(
+          'A list of recipe suggestions based on the input ingredients.'
+        ),
     }),
+
+
   },
   prompt: `You are a recipe suggestion AI. Given the ingredients a user has on hand, suggest recipes they can make.
 
