@@ -35,7 +35,7 @@ export default function Navbar() {
           </Link> 
         )}
         <div className="flex items-center gap-2">
-          <Link href="/saved-recipes" className="flex items-center gap-2 px-4 py-2 text-green-700 font-semibold transition-colors">Guardadas {pathname === "/saved-recipes" ? <span className="text-green-700">{BookmarkIconFilled}</span> : <span className="text-green-700">{BookmarkIcon}</span>}</Link>
+          <Link href="/saved-recipes" className="flex items-center gap-1 px-4 py-2 text-green-700 font-semibold transition-colors">Guardadas {pathname === "/saved-recipes" ? <span className="text-green-700">{BookmarkIconFilled}</span> : <span className="text-green-700">{BookmarkIcon}</span>}</Link>
           <div className="flex items-center gap-2">
             <AuthStatus />
             {/* {user && <LogoutButton />} */}
