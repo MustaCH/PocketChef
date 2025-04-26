@@ -6,7 +6,7 @@ import SavedRecipeDetail from "@/components/SavedRecipeDetail";
 
 export default function SavedRecipesView({ user }: { user: any }) {
   const [recipes, setRecipes] = useState<any[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number|null>(null);
   const [showDetailMobile, setShowDetailMobile] = useState(false);
 
   useEffect(() => {
@@ -18,29 +18,38 @@ export default function SavedRecipesView({ user }: { user: any }) {
     fetchRecipes();
   }, [user]);
 
-  // Responsive: detect if mobile
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  useEffect(() => {
+    if (!isMobile && recipes.length > 0) {
+      setSelectedIndex(0);
+    }
+    if (isMobile) {
+      setSelectedIndex(null);
+      setShowDetailMobile(false);
+    }
+  }, [isMobile, recipes.length]);
 
   if (recipes.length === 0) {
     return <div className="p-4">No tienes recetas guardadas.</div>;
   }
 
   return (
-    <div className="flex h-full w-full bg-secondary">
-      {/* Lista de recetas */}
+    <div className="flex min-h-screen w-full bg-secondary">
       <div className={`border-r w-full md:w-1/3 ${isMobile && showDetailMobile ? "hidden" : "block"}`}>
         <SavedRecipesList
           recipes={recipes}
-          selectedIndex={selectedIndex}
+          selectedIndex={!isMobile ? (selectedIndex ?? -1) : -1}
           onSelect={i => { setSelectedIndex(i); setShowDetailMobile(true); }}
         />
       </div>
-      {/* Detalle de receta */}
       <div className={`flex-1 w-full ${isMobile && !showDetailMobile ? "hidden" : "block"}`}>
-        <SavedRecipeDetail
-          recipe={recipes[selectedIndex]}
-          onBack={isMobile ? () => setShowDetailMobile(false) : undefined}
-        />
+        {(selectedIndex !== null && (!isMobile || showDetailMobile)) && (
+          <SavedRecipeDetail
+            recipe={recipes[selectedIndex]}
+            onBack={isMobile ? () => setShowDetailMobile(false) : undefined}
+          />
+        )}
       </div>
     </div>
   );

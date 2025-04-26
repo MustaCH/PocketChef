@@ -34,11 +34,11 @@ export default function Navbar() {
             <img className='w-12 h-12' src='/logo.png' alt='PocketChef Logo'/>
           </Link> 
         )}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <Link href="/saved-recipes" className="flex items-center gap-2 px-4 py-2 text-green-700 font-semibold transition-colors">Guardadas {pathname === "/saved-recipes" ? <span className="text-green-700">{BookmarkIconFilled}</span> : <span className="text-green-700">{BookmarkIcon}</span>}</Link>
           <div className="flex items-center gap-2">
             <AuthStatus />
-            {user && <LogoutButton />}
+            {/* {user && <LogoutButton />} */}
           </div>
         </div>
       </div>
