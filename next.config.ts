@@ -1,4 +1,3 @@
-import type { NextConfig } from 'next'
 import withPWA from 'next-pwa'
 
 const pwaConfig = {
@@ -9,15 +8,14 @@ const pwaConfig = {
   // runtimeCaching: [], // Opcional: estrategias de caching
 }
 
-const nextConfig: NextConfig = withPWA(pwaConfig)({
-  // Aquí van tus configuraciones de Next.js
+const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   // Otras configuraciones de Next.js...
-})
+}
 
-export default nextConfig
+export default withPWA(pwaConfig)(nextConfig)
