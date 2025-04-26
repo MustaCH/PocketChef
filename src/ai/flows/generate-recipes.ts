@@ -106,7 +106,14 @@ const generateRecipesPrompt = ai.definePrompt({
   {{dietaryRestrictions}}
   {{/if}}
 
-  Return a JSON array of recipes that can be made using the available ingredients, highlighting which of the provided ingredients are used in each recipe. Each recipe in the array should have a name, a list of ingredients required, step-by-step instructions, and a list of available ingredients that were used from the input.\n  `,
+  Return a JSON array of recipes that can be made using the available ingredients, highlighting which of the provided ingredients are used in each recipe. Each recipe in the array should have a name, a list of ingredients required, step-by-step instructions, and a list of available ingredients that were used from the input.\n  
+  
+  Important: For the step-by-step instructions, follow this format precisely:
+  <b>1.</b> First step instruction<br/>
+  <b>2.</b> Second step instruction<br/>
+  <b>3.</b> Third step instruction<br/>
+  
+  Include any blank lines between steps. This format is essential for proper display.`,
 });
 
 // Define the Genkit flow
