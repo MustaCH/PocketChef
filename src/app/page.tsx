@@ -41,7 +41,14 @@ const formSchema = z.object({
 export default function Home() {
   useFirebaseUserToRedux();
   const user = useSelector((state: RootState) => state.user);
-  const [lang, setLang] = useLocalStorage<'en' | 'es'>('lang', 'en');
+  const [lang, setLang] = useLocalStorage<'en' | 'es'>('lang', 'es');
+
+  useEffect(() => {
+    if (!lang) {
+      const browserLang = typeof window !== 'undefined' && navigator.language.startsWith('es') ? 'es' : 'en';
+      setLang(browserLang as 'en' | 'es');
+    }
+  }, [lang, setLang]);
   const texts: LanguageTexts = TEXTS[lang];
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,15 +75,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary py-6 md:py-12">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex justify-between gap-4 mb-4">
-        <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">{lang === 'en' ? 'English' : 'Español'}</span>
-            <Switch
-              id="airplane-mode"
-              checked={lang === 'es'}
-              onCheckedChange={() => setLang(lang === 'en' ? 'es' : 'en')}
-            />
-          </div>
+        <div className="flex justify-end gap-4 mb-4">
+
         {user.isAuthenticated ? (
             <div className="flex items-center gap-2">
               <img
