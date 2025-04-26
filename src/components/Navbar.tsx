@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import AuthStatus from "@/components/auth/AuthStatus";
-import LogoutButton from "@/components/auth/LogoutButton";
 
 export default function Navbar() {
   const pathname = usePathname();

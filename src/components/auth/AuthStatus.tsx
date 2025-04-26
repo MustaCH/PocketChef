@@ -13,6 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator
 } from "../ui/dropdown-menu";
+import { Spinner } from "@heroui/spinner";
 
 const GENERIC_AVATAR = 'https://ui-avatars.com/api/?name=User&background=random';
 
@@ -22,7 +23,7 @@ export default function AuthStatus() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [initialTab, setInitialTab] = useState<'login' | 'register'>('login');
 
-  if (loading) return <span>Cargando usuario...</span>;
+  if (loading) return <Spinner/>;
   if (error) return <span className="text-red-500">Error: {error.message}</span>;
   if (user) return (
     <DropdownMenu>
