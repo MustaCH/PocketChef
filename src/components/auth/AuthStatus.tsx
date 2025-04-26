@@ -24,7 +24,6 @@ export default function AuthStatus() {
     </span>
   );
 
-  // Estado para mostrar los modales
   const [showLogin, setShowLogin] = React.useState(false);
   const [showRegister, setShowRegister] = React.useState(false);
 
