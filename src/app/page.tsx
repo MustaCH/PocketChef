@@ -15,6 +15,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useToast} from '@/hooks/use-toast';
 import {useEffect, useState} from 'react';
+import { useGenerateRecipes } from '@/hooks/use-generate-recipes';
 import {Icons} from '@/components/icons';
 import {cn} from '@/lib/utils';
 import React from 'react';
@@ -32,12 +33,8 @@ const formSchema = z.object({
 });
 
 export default function Home() {
-  const [recipes, setRecipes] = useState<GenerateRecipesOutput | null>(null);
-  const {toast} = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const [lang, setLang] = useLocalStorage<'en' | 'es'>('lang', 'en');
   const texts: LanguageTexts = TEXTS[lang];
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,35 +43,16 @@ export default function Home() {
     },
   });
 
-  useEffect(() => {
-    if (isLoading) {
-      toast({
-        title: 'Generating Recipes...',
-        description: 'Please wait while we generate recipes based on your ingredients.',
-        duration: 5000,
-      });
-    }
-  }, [isLoading, toast]);
+  // Nuevo hook para manejar la lógica de generación de recetas
+  const {
+    isLoading,
+    recipes,
+    setRecipes,
+    handleGenerateRecipes,
+  } = useGenerateRecipes();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    try {
-      const generatedRecipes = await generateRecipes(values);
-      setRecipes(generatedRecipes);
-      toast({
-        title: 'Recipes Generated!',
-        description: 'Successfully generated recipes based on your ingredients.',
-      });
-    } catch (error: any) {
-      console.error('Error generating recipes:', error);
-      toast({
-        title: 'Error',
-        description: error?.message || 'Failed to generate recipes. Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    await handleGenerateRecipes(values);
   }
 
   return (
@@ -157,14 +135,14 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-foreground">{texts.generatedRecipes}</h2>
             <Separator />
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {recipes.recipes.map((recipe, index) => (
+              {recipes.recipes.map((recipe: GenerateRecipesOutput['recipes'][0], index: number) => (
                 <Card key={index}>
                   <CardHeader>
                     <CardTitle>{recipe.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <ul>
-                      {recipe.ingredientsRequired.map((ingredient, i) => (
+                      {recipe.ingredientsRequired.map((ingredient: string, i: number) => (
                         <li key={i} className="text-sm">
                           {recipe.availableIngredientsUsed.includes(ingredient) ? (
                             <span className="font-medium text-primary">{ingredient}</span>

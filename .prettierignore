@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+dist
+build
+coverage
+package-lock.json
+*.lock
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.ico
+*.env
+patches
