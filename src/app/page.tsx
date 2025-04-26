@@ -137,11 +137,12 @@ export default function Home() {
             <Separator />
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {recipes.recipes.map((recipe: GenerateRecipesOutput['recipes'][0], index: number) => (
-                <Card key={index}>
-                  <CardHeader>
+                <Card className="flex flex-col justify-between" key={index}>
+                  <CardHeader className='flex flex-row justify-between items-center'>
                     <CardTitle>{recipe.name}</CardTitle>
+                    <SaveRecipeButton recipe={recipe} />
                   </CardHeader>
-                  <CardContent className="space-y-2">
+                  <CardContent className="flex flex-col gap-2">
                     <ul>
                       {recipe.ingredientsRequired.map((ingredient: string, i: number) => (
                         <li key={i} className="text-sm">
@@ -159,7 +160,6 @@ export default function Home() {
 
                   </CardContent>
                   <CardFooter className="flex flex-col items-start gap-2">
-                    <SaveRecipeButton recipe={recipe} />
                     <p className="text-xs text-muted-foreground">{texts.enjoyYourMeal}</p>
                   </CardFooter>
                 </Card>
