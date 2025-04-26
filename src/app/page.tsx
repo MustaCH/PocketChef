@@ -20,6 +20,7 @@ import {Icons} from '@/components/icons';
 import {cn} from '@/lib/utils';
 import React from 'react';
 import { LanguageTexts } from '../../types';
+import { SaveRecipeButton } from '@/components';
 
 
 const formSchema = z.object({
@@ -157,7 +158,8 @@ export default function Home() {
                   }} />
 
                   </CardContent>
-                  <CardFooter>
+                  <CardFooter className="flex flex-col items-start gap-2">
+                    <SaveRecipeButton recipe={recipe} />
                     <p className="text-xs text-muted-foreground">{texts.enjoyYourMeal}</p>
                   </CardFooter>
                 </Card>
