@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/config";
 

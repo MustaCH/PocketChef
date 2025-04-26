@@ -1,11 +1,10 @@
-"use client";
+'use client'
+
 import { useState } from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-
 import { useEffect } from "react";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+
 
 export default function AuthModal({ open, onClose, initialTab = 'login' }: { open: boolean; onClose: () => void; initialTab?: 'login' | 'register' }) {
   const [tab, setTab] = useState<'login' | 'register'>(initialTab);
