@@ -21,7 +21,7 @@ export default function AuthModal({ open, onClose, initialTab = 'login' }: { ope
         <button className="absolute top-2 right-4 text-xl" onClick={onClose}>&times;</button>
         <div className="flex flex-col gap-4 mt-6">
           {
-            tab === 'login' ? <h2 className="text-center font-semibold">Iniciar sesión</h2> : <h2 className="text-center font-semibold">Registrarse</h2>
+            tab === 'login' ? <h2 className="text-center font-semibold text-2xl">Iniciar sesión</h2> : <h2 className="text-center font-semibold text-2xl">Registrarse</h2>
           }
         </div>
         {tab === 'login' ? <LoginForm onSuccess={onClose} /> : <RegisterForm onSuccess={onClose} />}
