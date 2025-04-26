@@ -49,13 +49,13 @@ export default function AuthStatus() {
   return (
     <span className="flex gap-2 items-center">
       <button
-        className="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-800 transition"
+        className="px-3 py-1 bg-transparent text-green-700 text-sm font-semibold rounded hover:bg-gray-300"
         onClick={() => setShowLogin(true)}
       >
-        Iniciar sesión
+        Ingresar
       </button>
       <button
-        className="px-3 py-1 bg-transparent text-green-700 rounded hover:bg-gray-300 transition border border-green-700"
+        className="px-3 py-1 bg-green-700 text-white text-sm font-semibold rounded hover:bg-green-800 transition"
         onClick={() => setShowRegister(true)}
       >
         Registrarse
