@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import LoginForm from "./LoginForm";
@@ -11,6 +11,8 @@ const GENERIC_AVATAR = 'https://ui-avatars.com/api/?name=User&background=random'
 
 export default function AuthStatus() {
   const [user, loading, error] = useAuthState(auth);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
 
   if (loading) return <span>Cargando usuario...</span>;
   if (error) return <span className="text-red-500">Error: {error.message}</span>;
@@ -24,8 +26,7 @@ export default function AuthStatus() {
     </span>
   );
 
-  const [showLogin, setShowLogin] = React.useState(false);
-  const [showRegister, setShowRegister] = React.useState(false);
+
 
   return (
     <span className="flex gap-2 items-center">
