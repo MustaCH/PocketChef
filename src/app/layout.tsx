@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 
 import { AppProviders } from "./providers";
 
+import Navbar from "@/components/Navbar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -70,6 +72,7 @@ export default function RootLayout({
       <link rel="apple-touch-startup-image" href="/apple-splash/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <AppProviders>
+        <Navbar />
           {children}
         </AppProviders>
       </body>

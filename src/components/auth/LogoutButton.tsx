@@ -5,7 +5,7 @@ import { auth } from "@/firebase/config";
 export default function LogoutButton() {
   return (
     <button
-      className="btn btn-secondary"
+      className="font-semibold text-sm"
       onClick={() => signOut(auth)}
     >
       Cerrar sesión
