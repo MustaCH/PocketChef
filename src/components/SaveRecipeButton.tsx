@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/firebase/config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import AuthModal from "@/components/auth/AuthModal";
+import { Spinner } from "@heroui/spinner";
 
 interface SaveRecipeButtonProps {
   recipe: any; // Cambia el tipo según tu modelo de receta
@@ -68,7 +69,7 @@ export default function SaveRecipeButton({ recipe }: SaveRecipeButtonProps) {
         title={loading ? "Guardando..." : success ? "Receta guardada" : "Guardar receta"}
       >
         {loading ? (
-          <span className="animate-spin">⏳</span>
+          <Spinner/>
         ) : success ? (
           BookmarkIconFilled
         ) : (

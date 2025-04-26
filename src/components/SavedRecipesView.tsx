@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import SavedRecipesList from "@/components/SavedRecipesList";
 import SavedRecipeDetail from "@/components/SavedRecipeDetail";
+import {Spinner} from "@heroui/spinner";
 
 export default function SavedRecipesView({ user }: { user: any }) {
   const [recipes, setRecipes] = useState<any[]>([]);
@@ -32,7 +33,7 @@ export default function SavedRecipesView({ user }: { user: any }) {
   }, [isMobile, recipes.length]);
 
   if (recipes.length === 0) {
-    return <div className="p-4">No tienes recetas guardadas.</div>;
+    return <div className="grid place-items-center min-h-screen"><Spinner /></div>;
   }
 
   return (
