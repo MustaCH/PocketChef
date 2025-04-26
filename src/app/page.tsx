@@ -22,7 +22,11 @@ import React from 'react';
 import { LanguageTexts } from '../../types';
 import { SaveRecipeButton } from '@/components';
 import AuthModal from '@/components/auth/AuthModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { useFirebaseUserToRedux } from '@/hooks/useFirebaseUserToRedux';
 
+const GENERIC_AVATAR = 'https://ui-avatars.com/api/?name=User&background=random';
 
 const formSchema = z.object({
   ingredients: z
@@ -35,6 +39,8 @@ const formSchema = z.object({
 });
 
 export default function Home() {
+  useFirebaseUserToRedux();
+  const user = useSelector((state: RootState) => state.user);
   const [lang, setLang] = useLocalStorage<'en' | 'es'>('lang', 'en');
   const texts: LanguageTexts = TEXTS[lang];
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,24 +68,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary py-6 md:py-12">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex justify-end gap-4 mb-4">
-          <Button
-            className="bg-transparent text-black font-semibold p-2"
-            variant="ghost"
-            onClick={() => { setAuthTab('login'); setAuthModalOpen(true); }}
-          >
-            Iniciar sesión
-          </Button>
-          <Button
-            className="bg-green-700 text-white font-semibold p-2"
-            variant="default"
-            onClick={() => { setAuthTab('register'); setAuthModalOpen(true); }}
-          >
-            Registrarse
-          </Button>
-        </div>
-        <div className='flex flex-col gap-8'>
-          <div className="flex items-center space-x-2">
+        <div className="flex justify-between gap-4 mb-4">
+        <div className="flex items-center space-x-2">
             <span className="text-sm text-muted-foreground">{lang === 'en' ? 'English' : 'Español'}</span>
             <Switch
               id="airplane-mode"
@@ -87,6 +77,34 @@ export default function Home() {
               onCheckedChange={() => setLang(lang === 'en' ? 'es' : 'en')}
             />
           </div>
+        {user.isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              <img
+                src={user.photoURL || GENERIC_AVATAR}
+                alt="Avatar"
+                className="w-10 h-10 rounded-full border-2 border-green-700 object-cover"
+              />
+            </div>
+          ) : (
+            <>
+              <Button
+                className="bg-transparent text-black font-semibold p-2"
+                variant="ghost"
+                onClick={() => { setAuthTab('login'); setAuthModalOpen(true); }}
+              >
+                Iniciar sesión
+              </Button>
+              <Button
+                className="bg-green-700 text-white font-semibold p-2"
+                variant="default"
+                onClick={() => { setAuthTab('register'); setAuthModalOpen(true); }}
+              >
+                Registrarse
+              </Button>
+            </>
+          )}
+        </div>
+        <div className='flex flex-col gap-8'>
           <div className="relative flex flex-col items-center mb-8">   
               <img className='w-28 h-28' src='/logo.png' alt='PocketChef Logo'/>
               <h1 className="absolute bottom-2 text-3xl text-center font-bold text-foreground mb-2">{texts.fridgeChef}</h1>
