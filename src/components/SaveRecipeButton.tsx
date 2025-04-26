@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/firebase/config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
@@ -14,6 +14,11 @@ export default function SaveRecipeButton({ recipe }: SaveRecipeButtonProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Cuando cambia la receta, resetea el estado de éxito
+  useEffect(() => {
+    setSuccess(false);
+  }, [recipe]);
   const [error, setError] = useState("");
 
   // SVG icons
@@ -35,15 +40,18 @@ export default function SaveRecipeButton({ recipe }: SaveRecipeButtonProps) {
     }
     setLoading(true);
     setError("");
+    // Limpia el objeto de campos undefined y loggea
+    // Prueba: guardar sin el campo createdAt
+    const cleanRecipe = Object.fromEntries(
+      Object.entries({ ...recipe })
+        .filter(([_, v]) => v !== undefined)
+    );
+
     try {
-      await addDoc(collection(db, "users", user.uid, "recipes"), {
-        ...recipe,
-        createdAt: Timestamp.now(),
-      });
+      await addDoc(collection(db, "users", user.uid, "recipes"), cleanRecipe);
       setSuccess(true);
-      setTimeout(() => setSuccess(false), 2000);
     } catch (e: any) {
-      setError(e.message);
+      setError(e.message || JSON.stringify(e));
     } finally {
       setLoading(false);
     }
