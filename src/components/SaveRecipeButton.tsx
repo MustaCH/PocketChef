@@ -59,7 +59,7 @@ export default function SaveRecipeButton({ recipe }: SaveRecipeButtonProps) {
         title={loading ? "Guardando..." : success ? "Receta guardada" : "Guardar receta"}
       >
         {loading ? (
-          <span className="animate-spin">{/* spinner could be added here */}⏳</span>
+          <span className="animate-spin">⏳</span>
         ) : success ? (
           BookmarkIconFilled
         ) : (

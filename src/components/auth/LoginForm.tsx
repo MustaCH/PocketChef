@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/config";
+import { Button } from "../ui/button";
 
 export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
         value={email}
         onChange={e => setEmail(e.target.value)}
         required
-        className="input input-bordered"
+        className="border-2 rounded-lg p-2"
       />
       <input
         type="password"
@@ -53,13 +54,13 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
         value={password}
         onChange={e => setPassword(e.target.value)}
         required
-        className="input input-bordered"
+        className="border-2 rounded-lg p-2"
       />
-      <button type="submit" className="btn btn-primary" disabled={loading}>
+      <Button type="submit" className="bg-green-700 text-white font-semibold p-2" disabled={loading}>
         {loading ? "Ingresando..." : "Ingresar"}
-      </button>
-      <button type="button" className="btn btn-outline" onClick={handleGoogle} disabled={loading}>
-        Ingresar con Google
+      </Button>
+      <button type="button" className="bg-blue-600 text-white font-semibold p-2 rounded-lg text-sm flex items-center gap-2 justify-center" onClick={handleGoogle} disabled={loading}>
+      <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" > <path d="M20.945 11a9 9 0 1 1 -3.284 -5.997l-2.655 2.392a5.5 5.5 0 1 0 2.119 6.605h-4.125v-3h7.945z" /> </svg> Ingresar con Google
       </button>
       {error && <div className="text-red-500 text-sm">{error}</div>}
     </form>

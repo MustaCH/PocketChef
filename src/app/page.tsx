@@ -21,6 +21,7 @@ import {cn} from '@/lib/utils';
 import React from 'react';
 import { LanguageTexts } from '../../types';
 import { SaveRecipeButton } from '@/components';
+import AuthModal from '@/components/auth/AuthModal';
 
 
 const formSchema = z.object({
@@ -44,13 +45,15 @@ export default function Home() {
     },
   });
 
-  // Nuevo hook para manejar la lógica de generación de recetas
   const {
     isLoading,
     recipes,
     setRecipes,
     handleGenerateRecipes,
   } = useGenerateRecipes();
+
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<'login' | 'register'>('login');
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await handleGenerateRecipes(values);
@@ -59,6 +62,22 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary py-6 md:py-12">
       <div className="container mx-auto px-4 md:px-6">
+        <div className="flex justify-end gap-4 mb-4">
+          <Button
+            className="bg-transparent text-black font-semibold p-2"
+            variant="ghost"
+            onClick={() => { setAuthTab('login'); setAuthModalOpen(true); }}
+          >
+            Iniciar sesión
+          </Button>
+          <Button
+            className="bg-green-700 text-white font-semibold p-2"
+            variant="default"
+            onClick={() => { setAuthTab('register'); setAuthModalOpen(true); }}
+          >
+            Registrarse
+          </Button>
+        </div>
         <div className='flex flex-col gap-8'>
           <div className="flex items-center space-x-2">
             <span className="text-sm text-muted-foreground">{lang === 'en' ? 'English' : 'Español'}</span>
@@ -73,6 +92,7 @@ export default function Home() {
               <h1 className="absolute bottom-2 text-3xl text-center font-bold text-foreground mb-2">{texts.fridgeChef}</h1>
           </div>
         </div>
+        <AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} initialTab={authTab} />
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>{texts.ingredients}</CardTitle>
@@ -113,7 +133,7 @@ export default function Home() {
                   )}
                 />
                 <div className='flex justify-between'>
-                  <Button type="submit" disabled={isLoading}>
+                  <Button className="bg-green-700 text-white font-semibold p-2 rounded-lg" type="submit" disabled={isLoading}>
                     {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                     {texts.generateRecipes}
                   </Button>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/config";
+import { Button } from "../ui/button";
 
 export default function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
   const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ export default function RegisterForm({ onSuccess }: { onSuccess?: () => void }) 
         value={email}
         onChange={e => setEmail(e.target.value)}
         required
-        className="input input-bordered"
+        className="border-2 rounded-lg p-2"
       />
       <input
         type="password"
@@ -53,12 +54,12 @@ export default function RegisterForm({ onSuccess }: { onSuccess?: () => void }) 
         value={password}
         onChange={e => setPassword(e.target.value)}
         required
-        className="input input-bordered"
+        className=" border-2 rounded-lg p-2"
       />
-      <button type="submit" className="btn btn-primary" disabled={loading}>
+      <Button type="submit" className="bg-green-700 text-white font-semibold p-2" disabled={loading}>
         {loading ? "Registrando..." : "Registrarse"}
-      </button>
-      <button type="button" className="btn btn-outline" onClick={handleGoogle} disabled={loading}>
+      </Button>
+      <button type="button" className="bg-blue-600 text-white font-semibold p-2 rounded-lg text-sm flex items-center gap-2 justify-center" onClick={handleGoogle} disabled={loading}>
         Registrarse con Google
       </button>
       {error && <div className="text-red-500 text-sm">{error}</div>}
