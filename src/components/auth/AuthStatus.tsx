@@ -6,6 +6,7 @@ import { auth } from "@/firebase/config";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import LogoutButton from "./LogoutButton";
+import AuthModal from "./AuthModal";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,8 +19,8 @@ const GENERIC_AVATAR = 'https://ui-avatars.com/api/?name=User&background=random'
 
 export default function AuthStatus() {
   const [user, loading, error] = useAuthState(auth);
-  const [showLogin, setShowLogin] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [initialTab, setInitialTab] = useState<'login' | 'register'>('login');
 
   if (loading) return <span>Cargando usuario...</span>;
   if (error) return <span className="text-red-500">Error: {error.message}</span>;
@@ -50,44 +51,17 @@ export default function AuthStatus() {
     <span className="flex gap-2 items-center">
       <button
         className="px-3 py-1 bg-transparent text-green-700 text-sm font-semibold rounded hover:bg-gray-300"
-        onClick={() => setShowLogin(true)}
+        onClick={() => { setInitialTab('login'); setShowAuthModal(true); }}
       >
         Ingresar
       </button>
       <button
         className="px-3 py-1 bg-green-700 text-white text-sm font-semibold rounded hover:bg-green-800 transition"
-        onClick={() => setShowRegister(true)}
+        onClick={() => { setInitialTab('register'); setShowAuthModal(true); }}
       >
         Registrarse
       </button>
-      {showLogin && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded shadow p-6 relative">
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
-              onClick={() => setShowLogin(false)}
-              aria-label="Cerrar"
-            >
-              ×
-            </button>
-            <LoginForm onSuccess={() => setShowLogin(false)} />
-          </div>
-        </div>
-      )}
-      {showRegister && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded shadow p-6 relative">
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
-              onClick={() => setShowRegister(false)}
-              aria-label="Cerrar"
-            >
-              ×
-            </button>
-            <RegisterForm onSuccess={() => setShowRegister(false)} />
-          </div>
-        </div>
-      )}
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} initialTab={initialTab} />
     </span>
   );
 }
