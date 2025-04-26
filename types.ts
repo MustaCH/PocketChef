@@ -17,4 +17,17 @@ export interface LanguageTexts {
     failedToGenerate: string;
     ingredientsPlaceholder: string;
     dietaryRestrictionsPlaceholder: string;
+    login: string;
+    register: string;
+    loginWithGoogle: string;
+    registerWithGoogle: string;
+    dontHaveAccount: string;
+    alreadyHaveAccount: string;
+    loadingUser: string;
+    notLoggedIn: string;
+    greeting: string;
+    loggingIn: string;
+    registering: string;
+    password: string;
+    email: string;
   }
