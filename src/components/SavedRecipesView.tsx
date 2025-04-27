@@ -78,7 +78,10 @@ export default function SavedRecipesView({ user }: { user: any }) {
               >
                 <SavedRecipeDetail
                   recipe={recipes[selectedIndex]}
-                  onBack={() => setShowDetailMobile(false)}
+                  onBack={() => {
+                    setShowDetailMobile(false);
+                    setSelectedIndex(null);
+                  }}
                 />
               </motion.div>
             )}
