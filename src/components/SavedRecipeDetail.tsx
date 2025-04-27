@@ -13,7 +13,7 @@ export default function SavedRecipeDetail({ recipe, onBack }: SavedRecipeDetailP
           Volver
         </button>
       )}
-      <div className="px-4">
+      <div className="p-4">
           <h2 className="text-xl font-bold mb-2">{recipe.name}</h2>
           <div className="mb-2">
             <strong>Ingredientes requeridos:</strong>

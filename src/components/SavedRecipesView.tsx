@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import SavedRecipesList from "@/components/SavedRecipesList";
 import SavedRecipeDetail from "@/components/SavedRecipeDetail";
+import { motion, AnimatePresence } from "framer-motion";
 
 
 import { Spinner } from "@heroui/spinner";
@@ -63,11 +64,32 @@ export default function SavedRecipesView({ user }: { user: any }) {
         />
       </div>
       <div className={`flex-1 w-full ${isMobile && !showDetailMobile ? "hidden" : "block"}`}>
-        {(selectedIndex !== null && (!isMobile || showDetailMobile)) && (
-          <SavedRecipeDetail
-            recipe={recipes[selectedIndex]}
-            onBack={isMobile ? () => setShowDetailMobile(false) : undefined}
-          />
+        {isMobile ? (
+          <AnimatePresence>
+            {showDetailMobile && selectedIndex !== null && (
+              <motion.div
+                key="recipe-detail-mobile"
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0, transition: { duration: 0.2 } }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute left-0 w-full bg-background z-20 top-16"
+                style={{ height: "calc(100vh - 4rem)" }}
+              >
+                <SavedRecipeDetail
+                  recipe={recipes[selectedIndex]}
+                  onBack={() => setShowDetailMobile(false)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        ) : (
+          selectedIndex !== null && (
+            <SavedRecipeDetail
+              recipe={recipes[selectedIndex]}
+              onBack={undefined}
+            />
+          )
         )}
       </div>
     </div>
