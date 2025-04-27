@@ -46,7 +46,22 @@ const GenerateRecipesOutputSchema = z.object({
 export type GenerateRecipesOutput = z.infer<typeof GenerateRecipesOutputSchema>;
 
 // Exported function to call the generateRecipesFlow
+function isValidIngredientInput(input: string): boolean {
+  // Divide por comas, limpia espacios y filtra términos vacíos
+  const items = input
+    .split(',')
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+
+  // Considera válido si hay al menos un término que sea solo letras y espacios, y longitud > 2
+  const plausible = items.filter(item => /^[a-záéíóúñü\s]+$/i.test(item) && item.length > 2);
+  return plausible.length > 0;
+}
+
 export async function generateRecipes(input: GenerateRecipesInput): Promise<GenerateRecipesOutput> {
+  if (!isValidIngredientInput(input.ingredients)) {
+    throw new Error('Por favor, ingresa sólo ingredientes de comida separados por comas. Ejemplo: tomate, arroz, pollo');
+  }
   return generateRecipesFlow(input);
 }
 
@@ -96,7 +111,11 @@ const generateRecipesPrompt = ai.definePrompt({
 
 
   },
-  prompt: `You are a recipe suggestion AI. Given the ingredients a user has on hand, suggest recipes they can make.
+  prompt: `You are a recipe suggestion AI. ONLY respond to requests that contain a list of food ingredients separated by commas. If the input does not look like a list of food ingredients (for example, if it contains objects, requests for jokes, poems, or anything not related to food), respond with the following JSON:
+
+  { "error": "Input must be a list of food ingredients separated by commas." }
+
+  Given the ingredients a user has on hand, suggest recipes they can make.
 
   Ingredients:
   {{ingredients}}
@@ -107,7 +126,6 @@ const generateRecipesPrompt = ai.definePrompt({
   {{/if}}
 
   Return a JSON array of recipes that can be made using the available ingredients, highlighting which of the provided ingredients are used in each recipe. Each recipe in the array should have a name, a list of ingredients required, step-by-step instructions, and a list of available ingredients that were used from the input.\n  
-  
   Important: For the step-by-step instructions, follow this format precisely:
   <b>1.</b> First step instruction<br/>
   <b>2.</b> Second step instruction<br/>
