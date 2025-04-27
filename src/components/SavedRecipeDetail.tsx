@@ -1,3 +1,5 @@
+import { Icons } from "@/components/icons";
+
 interface SavedRecipeDetailProps {
   recipe: any;
   onBack?: () => void;
@@ -9,7 +11,7 @@ export default function SavedRecipeDetail({ recipe, onBack }: SavedRecipeDetailP
     <div>
       {onBack && (
         <button onClick={onBack} className="m-4 flex items-center gap-1">
-          <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 24 24" fill="none" stroke="currentColor"  strokeLinecap="round" strokeLinejoin="round" width={24} height={24}  strokeWidth={2}> <path d="M15 6l-6 6l6 6"></path> </svg>
+          <Icons.arrowLeft />
           Volver
         </button>
       )}

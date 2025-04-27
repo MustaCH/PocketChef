@@ -6,6 +6,7 @@ import { auth, db } from "@/firebase/config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import AuthModal from "@/components/auth/AuthModal";
 import { Spinner } from "@heroui/spinner";
+import { Icons } from "@/components/icons";
 
 interface SaveRecipeButtonProps {
   recipe: any; // Cambia el tipo según tu modelo de receta
@@ -23,17 +24,6 @@ export default function SaveRecipeButton({ recipe }: SaveRecipeButtonProps) {
   }, [recipe]);
   const [error, setError] = useState("");
 
-  // SVG icons
-  const BookmarkIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" width={24} height={24} strokeWidth={2} aria-hidden="true">
-      <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"></path>
-    </svg>
-  );
-  const BookmarkIconFilled = (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" width={24} height={24} strokeWidth={2} aria-hidden="true">
-      <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"></path>
-    </svg>
-  );
 
   const handleSave = async () => {
     if (!user) {
@@ -71,9 +61,9 @@ export default function SaveRecipeButton({ recipe }: SaveRecipeButtonProps) {
         {loading ? (
           <Spinner/>
         ) : success ? (
-          BookmarkIconFilled
+          <span className="text-green-700"><Icons.bookmarkFilled /></span>
         ) : (
-          BookmarkIcon
+          <span className="text-green-700"><Icons.bookmark /></span>
         )}
       </button>
       <AuthModal open={modalOpen} onClose={() => setModalOpen(false)} />

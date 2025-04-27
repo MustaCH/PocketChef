@@ -4,21 +4,12 @@ import { usePathname } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import AuthStatus from "@/components/auth/AuthStatus";
+import { Icons } from "@/components/icons";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [user] = useAuthState(auth);
 
-  const BookmarkIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" width={24} height={24} strokeWidth={2} aria-hidden="true">
-      <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"></path>
-    </svg>
-  );
-  const BookmarkIconFilled = (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" width={24} height={24} strokeWidth={2} aria-hidden="true">
-      <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"></path>
-    </svg>
-  );
 
   return (
     <nav className="w-full border-b flex items-center px-4 py-2 justify-between shadow-sm">
@@ -36,7 +27,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {user && (
             <Link href="/saved-recipes" className="flex items-center gap-1 px-4 py-2 text-green-700 font-semibold transition-colors">
-              Guardadas {pathname === "/saved-recipes" ? <span className="text-green-700">{BookmarkIconFilled}</span> : <span className="text-green-700">{BookmarkIcon}</span>}
+              Guardadas {pathname === "/saved-recipes" ? <span className="text-green-700"><Icons.bookmarkFilled /></span> : <span className="text-green-700"><Icons.bookmark /></span>}
             </Link>
           )}
           <div className="flex items-center gap-2">
