@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "@/components/auth/LogoutButton";
 import AuthModal from "./AuthModal";
 import {
   DropdownMenu,
@@ -18,10 +18,13 @@ import { Spinner } from "@heroui/spinner";
 const GENERIC_AVATAR = 'https://ui-avatars.com/api/?name=User&background=random';
 
 
+import { useTheme } from "@/hooks/useTheme";
+
 export default function AuthStatus() {
   const [user, loading, error] = useAuthState(auth);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [initialTab, setInitialTab] = useState<'login' | 'register'>('login');
+  const { theme, toggleTheme } = useTheme();
 
   if (loading) return <Spinner/>;
   if (error) return <span className="text-red-500">Error: {error.message}</span>;
@@ -37,7 +40,19 @@ export default function AuthStatus() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">
-        <div className="px-4 py-2 text-sm text-gray-700">{user.displayName || user.email}</div>
+        <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{user.displayName || user.email}</div>
+        <DropdownMenuSeparator />
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded"
+        >
+          {theme === "dark" ? (
+            <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 24 24" fill="none" stroke="currentColor"  strokeLinecap="round" strokeLinejoin="round" width={24} height={24}  strokeWidth={2}> <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path> </svg> 
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 24 24" fill="none" stroke="currentColor"  strokeLinecap="round" strokeLinejoin="round" width={24} height={24}  strokeWidth={2}> <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path> <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path> </svg> 
+          )}
+          <span>{theme === "dark" ? "Oscuro" : "Claro"}</span>
+        </button>
         <DropdownMenuSeparator />
         <div className="px-4 py-2">
           <LogoutButton />

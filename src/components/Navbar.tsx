@@ -21,7 +21,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="w-full bg-white border-b flex items-center px-4 py-2 justify-between shadow-sm">
+    <nav className="w-full border-b flex items-center px-4 py-2 justify-between shadow-sm">
       {pathname === "/saved-recipes" && <div className="flex-1 flex items-center"> 
         <Link href="/" className="text-2xl font-bold text-green-700 flex items-center gap-2">
           <img className='w-12 h-12' src='/logo.png' alt='PocketChef Logo'/>
